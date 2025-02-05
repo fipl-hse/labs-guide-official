@@ -1,0 +1,40 @@
+{
+    "labs": [
+        {
+            "name": "lab_1_keywords_tfidf",
+            "coverage": 0
+        },
+        {
+            "name": "lab_2_classify_by_knn",
+            "coverage": 0
+        },
+        {
+            "name": "lab_2_keywords_cooccurrence",
+            "coverage": 0
+        },
+        {
+            "name": "lab_3_keywords_textrank",
+            "coverage": 0
+        },
+        {
+            "name": "lab_4_summarization_textrank",
+            "coverage": 0
+        },
+        {
+            "name": "lab_5_scrapper",
+            "coverage": 0
+        },
+        {
+            "name": "lab_6_pipeline",
+            "coverage": 0
+        }
+    ],
+    "addons": [],
+    "repository": {
+        "admins": [
+            "demid5111"
+        ],
+        "pr_name_regex": "Laboratory work #\\d, \\w+ \\w+ - 2\\dFPL\\d",
+        "pr_name_example": "Laboratory work #1, Andrei Kashchikhin - 21FPL2"
+    }
+}
