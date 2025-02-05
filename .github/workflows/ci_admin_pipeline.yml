@@ -1,0 +1,111 @@
+name: "Check admin PR"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.ref }}-admin
+  cancel-in-progress: true
+
+env:
+  REPOSITORY_TYPE: admin
+  GITHUB_REPOSITORY: ${{ github.repository }}
+  BRANCH_NAME: ${{ github.ref }}
+
+jobs:
+  install-dependencies:
+    name: Installing dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup FIPL environment
+        uses: fipl-hse/setup-env-action@v0.11
+      - name: Confirming everything is OK
+        run: |
+          ls -la venv
+
+  spellcheck:
+    name: Spellcheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    needs: [ install-dependencies ]
+    steps:
+      - uses: actions/checkout@master
+      - name: Install Aspell
+        run: |
+          sudo apt-get install aspell aspell-en aspell-ru
+      - name: Setup FIPL environment
+        uses: fipl-hse/setup-env-action@v0.11
+      - name: Spell check
+        run: |
+          aspell -v
+          source venv/bin/activate
+          python -m pyspelling -c config/spellcheck/.spellcheck.yaml -v
+
+  doc8-checks:
+    name: Doc8 checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    needs: [ install-dependencies ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup FIPL environment
+        uses: fipl-hse/setup-env-action@v0.11
+      - name: Doc8 check
+        run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python config/static_checks/check_doc8.py
+
+  requirements-check:
+    name: Requirements check
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    needs: [ install-dependencies ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup FIPL environment
+        uses: fipl-hse/setup-env-action@v0.11
+      - name: Dependencies check
+        run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python config/static_checks/requirements_check.py
+
+  newline-check:
+    name: Newline check
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    needs: [ install-dependencies ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup FIPL environment
+        uses: fipl-hse/setup-env-action@v0.11
+      - name: Newline check
+        run: |
+          source venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          python config/static_checks/newline_check.py
+
+  black-check:
+    name: Black check
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    needs: [ install-dependencies ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup FIPL environment
+        uses: fipl-hse/setup-env-action@v0.11
+      - name: Black check
+        run: |
+          source venv/bin/activate
+          python -m black --check .
