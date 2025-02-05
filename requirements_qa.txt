@@ -1,0 +1,6 @@
+black==24.10.0
+doc8==1.1.2
+logging518==1.0.0
+pydantic==2.10.2
+pyspelling==2.10
+resplendent==0.3.5
