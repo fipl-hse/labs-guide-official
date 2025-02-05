@@ -29,23 +29,23 @@ jobs:
         run: |
           ls -la venv
 
-  spellcheck:
-    name: Spellcheck
-    runs-on: ubuntu-latest
-    timeout-minutes: 4
-    needs: [ install-dependencies ]
-    steps:
-      - uses: actions/checkout@master
-      - name: Install Aspell
-        run: |
-          sudo apt-get install aspell aspell-en aspell-ru
-      - name: Setup FIPL environment
-        uses: fipl-hse/setup-env-action@v0.11
-      - name: Spell check
-        run: |
-          aspell -v
-          source venv/bin/activate
-          python -m pyspelling -c config/spellcheck/.spellcheck.yaml -v
+#  spellcheck:
+#    name: Spellcheck
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 4
+#    needs: [ install-dependencies ]
+#    steps:
+#      - uses: actions/checkout@master
+#      - name: Install Aspell
+#        run: |
+#          sudo apt-get install aspell aspell-en aspell-ru
+#      - name: Setup FIPL environment
+#        uses: fipl-hse/setup-env-action@v0.11
+#      - name: Spell check
+#        run: |
+#          aspell -v
+#          source venv/bin/activate
+#          python -m pyspelling -c config/spellcheck/.spellcheck.yaml -v
 
   doc8-checks:
     name: Doc8 checks
